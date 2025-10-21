@@ -129,7 +129,7 @@ export function Statistics({ habit, completionRate }: StatisticsProps) {
           </div>
         </div>
         <div className="flex gap-2" data-oid="y-4xdcu">
-          {last7Days.map((date, i) => {
+          {last7Days.map((date) => {
             const isCompleted = habit.completedDates.includes(date);
             const dayName = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"][
               new Date(date).getDay()
