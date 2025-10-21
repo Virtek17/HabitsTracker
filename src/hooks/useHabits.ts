@@ -35,8 +35,10 @@ export function useHabits() {
         STORAGE_KEY,
         JSON.stringify({ habits, achievements }),
       );
+      
     }
   }, [habits, achievements, isLoaded]);
+
 
   function initAchievements(): Achievement[] {
     return ACHIEVEMENTS.map((a) => ({ ...a, unlocked: false }));
@@ -103,13 +105,19 @@ export function useHabits() {
       });
 
       // Check for achievements
-      checkAchievements(habitId, newStreak);
+      checkAchievements();
     }
   }
 
-  function checkAchievements(habitId: string, streak: number) {
+  function checkAchievements() {
+    // Находим максимальный currentStreak среди всех привычек
+    const maxStreak = habits.length > 0 
+      ? Math.max(...habits.map(h => h.currentStreak)) 
+      : 0;
+
+    // Проверяем, какие достижения можно разблокировать
     const newAchievements = achievements.map((ach) => {
-      if (!ach.unlocked && streak >= ach.threshold) {
+      if (!ach.unlocked && maxStreak >= ach.threshold) {
         return {
           ...ach,
           unlocked: true,
@@ -118,6 +126,7 @@ export function useHabits() {
       }
       return ach;
     });
+
     setAchievements(newAchievements);
   }
 
