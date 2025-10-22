@@ -5,7 +5,7 @@ import { Statistics } from "./components/Statistics";
 import { Achievements } from "./components/Achievements";
 import { AddHabitModal } from "./components/AddHabitModal";
 import { EmptyState } from "./components/EmptyState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const {
@@ -24,6 +24,17 @@ function App() {
   const [view, setView] = useState<
     "today" | "calendar" | "stats" | "achievements"
   >("today");
+
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      console.log("Telegram WebApp активен:", tg.initDataUnsafe);
+    } else {
+      console.log("Приложение запущено вне Telegram");
+    }
+  }, []);
 
   if (!isLoaded) {
     return (
